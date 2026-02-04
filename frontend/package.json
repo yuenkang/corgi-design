@@ -7,6 +7,8 @@
         "build": "npm run build:popup && npm run build:content && mkdir -p dist/background && cp src/background/background.js dist/background/background.js",
         "build:popup": "vite build",
         "build:content": "vite build --config vite.content.config.js",
+        "build:zip": "cd dist && zip -r ../corgi-design.zip . && cd ..",
+        "package": "npm run build && npm run build:zip",
         "preview": "vite preview"
     },
     "dependencies": {

@@ -3,7 +3,8 @@
  * Handles communication with the Python backend
  */
 
-const API_BASE_URL = 'http://localhost:8000';
+// Use Vite environment variable, fallback to localhost for development
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
 /**
  * Analyze page design using the backend API

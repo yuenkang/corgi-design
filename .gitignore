@@ -28,3 +28,4 @@ npm-debug.log*
 .parcel-cache/
 logs/
 __pycache__/
+*.zip
