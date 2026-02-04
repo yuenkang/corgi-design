@@ -59,8 +59,45 @@ corgi/
 cd backend
 pip install -r requirements.txt
 cp .env.example .env
-# 编辑 .env 填入 GEMINI_API_KEY
+# 编辑 .env 填入 OPENAI_API_KEY 或 GEMINI_API_KEY
 python main.py
+```
+
+### Docker 部署
+
+```bash
+cd backend
+
+# 方式1: Docker Compose (推荐)
+cp .env.example .env
+# 编辑 .env 配置 API Key
+docker-compose up -d
+
+# 方式2: Docker 直接运行
+docker build -t corgi-design-api .
+docker run -d -p 8000:8000 \
+  -e OPENAI_API_KEY=your_key \
+  -e OPENAI_BASE_URL=https://api.openai.com/v1 \
+  corgi-design-api
+
+# 查看日志
+docker-compose logs -f
+
+# 代码更新后重新部署
+docker-compose up -d --build
+```
+
+**开发模式**: 修改 `docker-compose.yml` 挂载代码目录实现热更新：
+
+```yaml
+volumes:
+  - ./logs:/app/logs
+  - .:/app  # 挂载代码目录
+```
+
+然后只需重启容器：
+```bash
+docker-compose restart
 ```
 
 ### 前端构建
@@ -68,7 +105,8 @@ python main.py
 ```bash
 cd frontend
 npm install
-npm run build
+npm run build      # 仅构建
+npm run package    # 构建并打包为 ZIP
 ```
 
 ### 加载扩展
@@ -90,9 +128,30 @@ npm run build
 | 命令 | 说明 |
 |------|------|
 | `cd backend && python main.py` | 启动后端 |
+| `cd backend && docker-compose up -d` | Docker 启动后端 |
 | `cd frontend && npm run build` | 构建前端 |
+| `cd frontend && npm run package` | 构建并打包 ZIP |
 | `cd frontend && npm run dev` | 前端开发模式 |
+
+## 🔑 环境变量
+
+### 后端 (backend/.env)
+
+| 变量 | 说明 | 默认值 |
+|------|------|--------|
+| `AI_PROVIDER` | AI 服务商 (openai/gemini) | openai |
+| `OPENAI_API_KEY` | OpenAI 兼容 API Key | - |
+| `OPENAI_BASE_URL` | API 地址 | https://api.openai.com/v1 |
+| `OPENAI_MODEL` | 模型名称 | gpt-4o-mini |
+| `AI_LOG_ENABLED` | 启用 AI 日志 | true |
+
+### 前端 (frontend/.env)
+
+| 变量 | 说明 | 默认值 |
+|------|------|--------|
+| `VITE_API_BASE_URL` | 后端 API 地址 | http://localhost:8000 |
 
 ## 📄 许可证
 
 MIT License
+

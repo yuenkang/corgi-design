@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  corgi-api:
+    build: .
+    container_name: corgi-design-api
+    ports:
+      - "8000:8000"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8000
+      - AI_PROVIDER=${AI_PROVIDER:-openai}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_BASE_URL=${OPENAI_BASE_URL:-https://api.openai.com/v1}
+      - OPENAI_MODEL=${OPENAI_MODEL:-gpt-4o-mini}
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - AI_LOG_ENABLED=${AI_LOG_ENABLED:-true}
+      - AI_LOG_FILE=/app/logs/ai_requests.log
+    volumes:
+      - ./logs:/app/logs
+      # 开发模式: 取消注释以下行启用代码热更新
+      # - .:/app
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
