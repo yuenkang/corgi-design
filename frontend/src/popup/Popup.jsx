@@ -1,7 +1,14 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function Popup() {
     const [loading, setLoading] = useState(false)
+    const [version, setVersion] = useState('')
+
+    useEffect(() => {
+        // Get version from manifest.json
+        const manifest = chrome.runtime.getManifest()
+        setVersion(manifest.version)
+    }, [])
 
     const handleAnalyze = async () => {
         setLoading(true)
@@ -49,7 +56,7 @@ export default function Popup() {
         <div className="w-[280px] min-h-[320px] bg-gradient-to-br from-primary-500 to-secondary-500 text-white">
             <div className="flex flex-col items-center p-8 text-center">
                 {/* Logo */}
-                <div className="w-[72px] h-[72px] mb-4 rounded-2xl overflow-hidden shadow-lg bg-white/10">
+                <div className="w-[72px] h-[72px] mb-4 rounded-2xl overflow-hidden shadow-lg">
                     <img
                         src="../icons/icon128.png"
                         alt="Corgi Design"
@@ -95,8 +102,9 @@ export default function Popup() {
                 </button>
 
                 {/* Version */}
-                <p className="mt-6 text-xs opacity-50">Version 1.0.0</p>
+                <p className="mt-6 text-xs opacity-50">Version {version}</p>
             </div>
         </div>
     )
 }
+

@@ -160,17 +160,76 @@ function Sidebar({ onClose }) {
             {/* Content */}
             <div style={{ flex: 1, padding: '24px', overflowY: 'auto' }}>
                 {analyzing ? (
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '200px', gap: '20px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '280px', gap: '24px' }}>
+                        {/* AI Icon with pulse animation */}
                         <div style={{
-                            width: '48px',
-                            height: '48px',
-                            border: '4px solid rgba(255, 255, 255, 0.1)',
-                            borderTopColor: '#667eea',
-                            borderRadius: '50%',
-                            animation: 'spin 1s linear infinite'
-                        }} />
-                        <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '14px' }}>
-                            {apiAvailable ? '🤖 AI 正在分析网页设计...' : '正在分析网页结构...'}
+                            position: 'relative',
+                            width: '80px',
+                            height: '80px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}>
+                            {/* Outer ring */}
+                            <div style={{
+                                position: 'absolute',
+                                width: '80px',
+                                height: '80px',
+                                border: '3px solid rgba(102, 126, 234, 0.2)',
+                                borderRadius: '50%',
+                                animation: 'pulse 2s ease-in-out infinite'
+                            }} />
+                            {/* Spinning ring */}
+                            <div style={{
+                                position: 'absolute',
+                                width: '64px',
+                                height: '64px',
+                                border: '3px solid transparent',
+                                borderTopColor: '#667eea',
+                                borderRightColor: '#764ba2',
+                                borderRadius: '50%',
+                                animation: 'spin 1s linear infinite'
+                            }} />
+                            {/* Center icon */}
+                            <span style={{ fontSize: '28px', animation: 'bounce 1s ease-in-out infinite' }}>
+                                {apiAvailable ? '🤖' : '🔍'}
+                            </span>
+                        </div>
+
+                        {/* Status text with typing animation */}
+                        <div style={{ textAlign: 'center' }}>
+                            <p style={{
+                                color: '#fff',
+                                fontSize: '15px',
+                                fontWeight: 500,
+                                marginBottom: '8px'
+                            }}>
+                                {apiAvailable ? 'AI 正在分析网页设计' : '正在分析网页结构'}
+                            </p>
+                            <div style={{ display: 'flex', gap: '4px', justifyContent: 'center' }}>
+                                {[0, 1, 2].map(i => (
+                                    <span key={i} style={{
+                                        width: '8px',
+                                        height: '8px',
+                                        borderRadius: '50%',
+                                        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                                        animation: `dotPulse 1.4s ease-in-out ${i * 0.2}s infinite`
+                                    }} />
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Progress hint */}
+                        <p style={{
+                            color: 'rgba(255, 255, 255, 0.5)',
+                            fontSize: '12px',
+                            maxWidth: '200px',
+                            textAlign: 'center',
+                            lineHeight: 1.5
+                        }}>
+                            {apiAvailable
+                                ? '正在进行 SEO、性能、可访问性等多维度分析...'
+                                : '正在收集页面信息...'}
                         </p>
                     </div>
                 ) : (
