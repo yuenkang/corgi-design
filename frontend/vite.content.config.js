@@ -4,6 +4,7 @@ import { resolve } from 'path'
 
 export default defineConfig({
     plugins: [react()],
+    publicDir: false,
     build: {
         outDir: 'dist/content',
         emptyOutDir: false,
