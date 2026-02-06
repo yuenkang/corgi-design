@@ -158,3 +158,15 @@ Since UI options can change or be hard to find, it is **highly recommended** to 
    - You can check certificate status with `gcloud compute ssl-certificates list`.
 
 Once the certificate status turns `ACTIVE`, your service will be accessible via your custom domain.
+
+## 6. Viewing Logs
+
+In Cloud Run, all content written to `stdout` (standard output) and `stderr` (standard error) is automatically captured. You can view real-time logs by following these steps:
+
+1. Go to the [Google Cloud Console](https://console.cloud.google.com/run).
+2. Click on your service name `corgi-design-backend`.
+3. Click the **Logs** tab.
+4. You can use filters to search for specific logs, such as searching `ai_requests` to see AI request and response details.
+
+> [!TIP]
+> It is recommended to log to standard output in production. This allows you to use the cloud logging system's search, filtering, and export features without consuming container memory.

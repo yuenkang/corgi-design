@@ -156,3 +156,15 @@ gcloud artifacts repositories create corgi-repo --repository-format=docker --loc
      - 证书生效（Active）后，您可以尝试重新开启代理并设置为 Full (Strict) 模式，但初始化时建议关闭。
    - 等待 SSL 证书生效（状态变为 ACTIVE），通常需要 15-60 分钟。
    - 您可以使用 `gcloud compute ssl-certificates list` 查看证书状态。
+
+## 6. 日志查看
+
+在 Cloud Run 环境中，系统会自动捕获程序输出到 `stdout` (标准输出) 和 `stderr` (标准错误) 的所有内容。您可以按照以下步骤查看实时日志：
+
+1. 进入 [Google Cloud Console](https://console.cloud.google.com/run)。
+2. 点击您的服务名称 `corgi-design-backend`。
+3. 点击 **Logs (日志)** 标签页。
+4. 您可以使用过滤器搜索特定的日志，例如搜索 `ai_requests` 来查看 AI 的请求和响应详情。
+
+> [!TIP]
+> 生产环境建议通过标准输出记录日志，这样可以利用云端日志系统的搜索、过滤和导出功能，且不会占用容器内存。

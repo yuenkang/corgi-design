@@ -10,36 +10,33 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+import logging
+import sys
+
 # AI logging configuration
 AI_LOG_ENABLED = os.getenv("AI_LOG_ENABLED", "true").lower() == "true"
-AI_LOG_FILE = os.getenv("AI_LOG_FILE", "logs/ai_requests.log")
 
-
-def ensure_log_dir():
-    """Ensure log directory exists"""
-    log_dir = os.path.dirname(AI_LOG_FILE)
-    if log_dir and not os.path.exists(log_dir):
-        os.makedirs(log_dir, exist_ok=True)
+# Configure dedicated logger for AI interaction
+ai_logger = logging.getLogger("ai_requests")
+ai_logger.setLevel(logging.INFO)
+# Standard output is automatically captured by Cloud Run
+if not ai_logger.handlers:
+    sh = logging.StreamHandler(sys.stdout)
+    sh.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
+    ai_logger.addHandler(sh)
 
 
 def ai_log(msg: str):
-    """Write AI request/response log to file"""
+    """Log AI request/response to standard output"""
     if not AI_LOG_ENABLED:
         return
     
-    ensure_log_dir()
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    log_line = f"[{timestamp}] {msg}\n"
-    
-    try:
-        with open(AI_LOG_FILE, "a", encoding="utf-8") as f:
-            f.write(log_line)
-    except Exception as e:
-        print(f"[OpenAI] Failed to write AI log: {e}", flush=True)
+    # In Cloud Run, everything written to stdout is captured by Cloud Logging
+    ai_logger.info(msg)
 
 
 def console_log(msg: str):
-    """Print concise log to console"""
+    """Print concise log to console/stdout"""
     print(f"[OpenAI] {msg}", flush=True)
 
 
@@ -57,7 +54,7 @@ class OpenAIService:
         ai_log(f"Base URL: {self.base_url}")
         ai_log(f"Model: {self.model}")
         ai_log(f"API Key: {self.api_key[:20]}...{self.api_key[-4:] if self.api_key else 'None'}")
-        ai_log(f"AI Log Enabled: {AI_LOG_ENABLED}, Log File: {AI_LOG_FILE}")
+        ai_log(f"AI Log Enabled: {AI_LOG_ENABLED}")
         
         if not self.api_key:
             raise ValueError("OPENAI_API_KEY environment variable not set")
