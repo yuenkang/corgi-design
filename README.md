@@ -145,6 +145,9 @@ npm run package    # 构建并打包为 ZIP
 | `OPENAI_MODEL` | 模型名称 | gpt-4o-mini |
 | `AI_LOG_ENABLED` | 启用 AI 日志 | true |
 
+> [!NOTE]
+> 如果您使用 GitHub Actions 进行部署，请务必在仓库设置中配置相应的 **Secrets** (用于 Key) 和 **Variables** (用于其它配置)。详见 [后端部署指南](docs/deployment-guide.md)。
+
 ### 前端 (frontend/.env)
 
 | 变量 | 说明 | 默认值 |

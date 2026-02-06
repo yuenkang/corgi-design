@@ -64,8 +64,11 @@ jobs:
         image: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE_NAME }}:${{ github.sha }}
         flags: '--allow-unauthenticated'
         env_vars: |
-          AI_PROVIDER=openai
-          # Add other env vars here or use secrets mapping
+            AI_PROVIDER=${{ vars.AI_PROVIDER }}
+            OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+            OPENAI_BASE_URL=${{ vars.OPENAI_BASE_URL }}
+            OPENAI_MODEL=${{ vars.OPENAI_MODEL }}
+            # Add other env vars here or use secrets mapping
 
     - name: Show Output
       run: echo ${{ steps.deploy.outputs.url }}

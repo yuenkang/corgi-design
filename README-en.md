@@ -145,6 +145,9 @@ npm run package    # Build and package as ZIP
 | `OPENAI_MODEL` | Model Name | gpt-4o-mini |
 | `AI_LOG_ENABLED` | Enable AI Logging | true |
 
+> [!NOTE]
+> If you are using GitHub Actions for deployment, make sure to configure the corresponding **Secrets** (for keys) and **Variables** (for other configs) in the repository settings. See [Backend Deployment Guide](docs/deployment-guide-en.md) for details.
+
 ### Frontend (frontend/.env)
 
 | Variable | Description | Default |
